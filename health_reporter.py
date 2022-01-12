@@ -8,13 +8,13 @@ import threading
 
 
 class ErrorType(enum.Enum):
-    none = (0, "none")
-    warning = (1, "warning")
-    error = (2, "error")
-    # ошибка которая не будет выведена у клиента, но ляжет в базу, телеметрию
-    silent_error = (3, "silent_error")
+    none             = (0, "none")
+    warning          = (1, "warning")
+    error            = (2, "error")
+    # ошибки которая не будет выведена у клиента, но ляжет в базу, телеметрию
+    silent_error     = (3, "silent_error")
     # ворнинг который не будет выведен у клиента, но ляжет в базу, телеметрию
-    silent_warning = (4, "silent_warning")
+    silent_warning   = (4, "silent_warning")
 
     def __init__(self, id, text):
         self.text = text
@@ -120,7 +120,7 @@ class HealthReporter:
             return False
         keepalive_cycle = self.db.get("health_monitor_cfg:reporter_cycle_sec")
         if keepalive_cycle:
-            self.keepalive_cycle_sec = int(int(keepalive_cycle) / 2) 
+            self.keepalive_cycle_sec = int(keepalive_cycle) 
         self.last_keepalive_cycle_ts = time.time()
 
         if self.db.get("health_monitor_cfg:config_ready") == "true":

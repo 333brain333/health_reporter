@@ -3,6 +3,8 @@ import sys, argparse
 from health_reporter import Error, ErrorType, ErrorSource, HealthReporter
 import time
 
+# мини приложуха для отправки кипэлайвов от подсистемы, 
+# и репорта об ошибках с помощью healthReporter
 def main(argv):
     msg_type = ErrorType.error
     msg_source = ErrorSource.GPS
