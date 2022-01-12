@@ -80,7 +80,6 @@ def main(argv):
         if errorSender.getSecondsToNextKeepalive() < 0:
             errorSender.keepalive()      
         print("spin")
-        time.sleep(5)
 
 
 if __name__ == "__main__":
