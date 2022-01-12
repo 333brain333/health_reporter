@@ -61,14 +61,6 @@ class HealthReporter:
         self.source = err_source
         self.keepalive_cycle_sec = 20
         self.redis_config_ready_ev = threading.Event()
-
-        if self.db.get("health_monitor_cfg:config_ready") == "true":
-            self.redis_config_ready_ev.set()
-
-        self.pubsub = self.db.pubsub()
-        self.pubsub.subscribe(**{"config_ready": self.__setReady})
-        self.pubsub.run_in_thread(sleep_time=.01, daemon=True)
-
         self.initConfig()
 
 
@@ -131,6 +123,13 @@ class HealthReporter:
         if keepalive_cycle:
             self.keepalive_cycle_sec = int(int(keepalive_cycle) / 2) 
         self.last_keepalive_cycle_ts = time.time()
+        
+        if self.db.get("health_monitor_cfg:config_ready") == "true":
+            self.redis_config_ready_ev.set()
+
+        self.pubsub = self.db.pubsub()
+        self.pubsub.subscribe(**{"config_ready": self.__setReady})
+        self.pubsub.run_in_thread(sleep_time=.01, daemon=True)
         return True
 
 
