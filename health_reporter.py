@@ -1,17 +1,10 @@
-"""
-Module for sending errors to redis
-"""
-
-#from _typeshed import Self
 from typing import get_type_hints
 import json
 import redis
 import datetime
 import enum
-
 import time
-
-import threading, queue
+import threading
 
 
 class ErrorType(enum.Enum):
@@ -28,6 +21,9 @@ class ErrorType(enum.Enum):
         self.id = id
 
 class ErrorSource(enum.Enum):
+    """
+    Службы-источники ошибок
+    """
     unknown     = (0, "Unknown")
     planner     = (1, "Planner")
     DBW         = (2, "DBW")
@@ -48,7 +44,10 @@ class Error:
 
 
 class HealthReporter:
-
+    """
+    Класс для передачи сообщений об ошибках
+    и keepalive в Redis.
+    """
     def __init__(self, err_source : ErrorSource, redis_host=None, redis_port=None, redis_pssw=None, redis_db=1):
         self.db = redis.StrictRedis(host=redis_host, 
                                     port=redis_port,
@@ -123,7 +122,7 @@ class HealthReporter:
         if keepalive_cycle:
             self.keepalive_cycle_sec = int(int(keepalive_cycle) / 2) 
         self.last_keepalive_cycle_ts = time.time()
-        
+
         if self.db.get("health_monitor_cfg:config_ready") == "true":
             self.redis_config_ready_ev.set()
 
@@ -133,10 +132,10 @@ class HealthReporter:
         return True
 
 
-    def __setReady(self, msg):
-        self.redis_config_ready_ev.set()
-
     def isConnected(self):
+        """
+        Проверить, активно ли подключение к Redis
+        """
         try:
             self.db.ping()
         except (redis.exceptions.TimeoutError, redis.connection.socket.timeout,
@@ -145,4 +144,9 @@ class HealthReporter:
         except (TypeError):
             return False
         return True
+
+    
+    def __setReady(self, msg):
+        self.redis_config_ready_ev.set()
+
 
