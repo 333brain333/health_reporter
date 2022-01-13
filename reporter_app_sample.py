@@ -7,7 +7,7 @@ import time
 # и репорта об ошибках с помощью healthReporter
 def main(argv):
     msg_type = ErrorType.error
-    msg_source = ErrorSource.GPS
+    msg_source = ErrorSource.GPSservice
 
     error_code = "GPS00010"
 
@@ -74,6 +74,10 @@ def main(argv):
         # cycle to check health
         # active errors should be reported
         # not less frequently than cycleTime
+
+        # также отправку ошибок и keepaliveов
+        # можно вести из разных потоков, т.к.
+        # redis-py потокобезопасный
         time.sleep(3)
         if error_state:
             errorSender.pushError(e)

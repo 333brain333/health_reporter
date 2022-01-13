@@ -29,8 +29,8 @@ class ErrorSource(enum.Enum):
     DBW         = (2, "DBW")
     perception  = (3, "Perception")
     localizer   = (4, "Localizer")
-    GPS         = (5, "GPS")
-    CANDEV      = (6, "CANDEV")
+    GPSservice  = (5, "GPS-service")
+    CANdevices  = (6, "CAN-devices")
 
     def __init__(self, id, text):
         self.text = text
@@ -123,11 +123,10 @@ class HealthReporter:
             self.keepalive_cycle_sec = int(keepalive_cycle) 
         self.last_keepalive_cycle_ts = time.time()
 
-        if self.db.get("health_monitor_cfg:config_ready") == "true":
-            self.redis_config_ready_ev.set()
+        self.__checkRedisConfigReady()
 
         self.pubsub = self.db.pubsub()
-        self.pubsub.subscribe(**{"config_ready": self.__setReady})
+        self.pubsub.subscribe(**{"config_ready": self.__checkRedisConfigReady})
         self.pubsub.run_in_thread(sleep_time=.01, daemon=True)
         return True
 
@@ -146,7 +145,8 @@ class HealthReporter:
         return True
 
     
-    def __setReady(self, msg):
-        self.redis_config_ready_ev.set()
+    def __checkRedisConfigReady(self, msg = None):
+        if self.db.get("health_monitor_cfg:config_ready") == "true":
+            self.redis_config_ready_ev.set()
 
 
