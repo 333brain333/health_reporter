@@ -105,7 +105,7 @@ class HealthReporter:
         """
         data_dict = {
         "type" : error.type.text, 
-        "device" : error.source.name, 
+        "device" : error.source.text, 
         "timestamp" : datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='milliseconds'),
         "text_ru" : "To be replaced from Redis dict",
         "text_en" : "To be replaced from Redis dict",
