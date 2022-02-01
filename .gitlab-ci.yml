@@ -1,0 +1,14 @@
+image: $CI_REGISTRY/pypi/python-test-docker/python:3.8
+
+variables:
+  TWINE_PASSWORD: ${CI_JOB_TOKEN}
+  TWINE_USERNAME: gitlab-ci-token
+  MARKET_PROJECT_ID: 347
+  MARKET_REPO_URL: https://gitlab.cognitivepilot.com/api/v4/projects/${MARKET_PROJECT_ID}/packages/pypi
+
+
+deploy:
+  script:
+    - pip install twine
+    - python setup.py sdist bdist_wheel
+    - python -m twine upload --repository-url ${MARKET_REPO_URL} dist/*
