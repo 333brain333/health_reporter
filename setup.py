@@ -19,11 +19,11 @@ requirements = parse_requirements()
 
 setuptools.setup(
     name='cpilot-health-reporter',
-    version='0.1',
+    version='0.2',
     packages=setuptools.find_packages(),
     description="Health Reporter for CognitivePilot",
     url=(
-        "https://gitlab.cognitivepilot.com/ar13/web-service-tool/agrobox"
+        "https://gitlab.cognitivepilot.com/ar13/health_reporter/"
     ),
     author="Igor Dranitskiy",
     author_email="i.dranitskiy@cognitivepilot.com",
