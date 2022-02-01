@@ -19,7 +19,7 @@ requirements = parse_requirements()
 
 setuptools.setup(
     name='cpilot-health-reporter',
-    version='0.2.2',
+    version='0.2.3',
     packages=setuptools.find_packages(),
     description="Health Reporter for CognitivePilot",
     url=(
