@@ -24,13 +24,14 @@ class ErrorSource(enum.Enum):
     """
     Службы-источники ошибок
     """
-    unknown     = (0, "Unknown")
-    planner     = (1, "Planner")
-    DBW         = (2, "DBW")
-    perception  = (3, "Perception")
-    localizer   = (4, "Localizer")
-    GPSservice  = (5, "GPS-service")
-    CANdevices  = (6, "CAN-devices")
+    unknown        = (0, "Unknown")
+    planner        = (1, "Planner")
+    DBW            = (2, "DBW")
+    perception     = (3, "Perception")
+    localizer      = (4, "Localizer")
+    GPSservice     = (5, "GPS-service")
+    CANdevices     = (6, "CAN-devices")
+    JetsonHardware = (7, "jetson hardware")
 
     def __init__(self, id, text):
         self.text = text
