@@ -15,6 +15,8 @@ class ErrorType(enum.Enum):
     silent_error     = (3, "silent_error")
     # ворнинг который не будет выведен у клиента, но ляжет в базу, телеметрию
     silent_warning   = (4, "silent_warning")
+    # сообщение-уведомление, которое не сохраняется в историю
+    event            = (5, "event")
 
     def __init__(self, id, text):
         self.text = text
@@ -113,7 +115,10 @@ class HealthReporter:
         "error_code" : error.code
         }
         error_str = json.dumps(data_dict)
-        self.db.publish("raw_errors", error_str)
+        if error.type == ErrorType.event:
+            self.db.publish("error_notifications", error_str)
+        else:
+            self.db.publish("raw_errors", error_str)
 
 
     def initConfig(self):
